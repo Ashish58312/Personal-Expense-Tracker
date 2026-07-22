@@ -49,51 +49,63 @@
             overflow-x: hidden;
             transition: background-color 0.3s ease;
 
-            /* Evening home-office desk scene (CSS-only, no external image) */
-            background-color: #2b241d;
-            background-image:
-                radial-gradient(ellipse 480px 380px at 14% 78%, rgba(120, 170, 210, 0.35), transparent 60%),
-                radial-gradient(ellipse 520px 420px at 88% 6%, rgba(255, 196, 120, 0.28), transparent 62%),
-                repeating-linear-gradient(
-                    100deg,
-                    rgba(0, 0, 0, 0.08) 0px,
-                    rgba(0, 0, 0, 0.08) 2px,
-                    transparent 2px,
-                    transparent 6px
-                ),
-                repeating-linear-gradient(
-                    100deg,
-                    rgba(0, 0, 0, 0.22) 0px,
-                    rgba(0, 0, 0, 0.22) 3px,
-                    transparent 3px,
-                    transparent 140px
-                ),
-                linear-gradient(100deg, #4a3626 0%, #362718 45%, #2b1f14 75%, #1e150d 100%);
+            /* Money-bill themed background (Option B) */
+            background-color: #d9cba3;
             background-attachment: fixed;
         }
 
-        .desk-scene {
+        .bills-scene {
             position: fixed;
             inset: 0;
             pointer-events: none;
             z-index: 0;
+            overflow: hidden;
         }
 
-        .desk-scene svg {
+        .bill {
             position: absolute;
-            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
+            width: 200px;
+            height: 90px;
+            background: linear-gradient(135deg, #cdbf94, #b9a874);
+            border: 2px solid #a99a68;
+            border-radius: 4px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+            opacity: 0.9;
         }
 
-        .desk-scene .laptop { width: 260px; height: auto; left: 3%; bottom: 4%; opacity: 0.9; }
-        .desk-scene .notebook { width: 150px; height: auto; right: 4%; bottom: 6%; opacity: 0.85; transform: rotate(-6deg); }
-        .desk-scene .mug { width: 74px; height: auto; right: 10%; top: 8%; opacity: 0.8; }
-        .desk-scene .plant { width: 96px; height: auto; left: 6%; top: 5%; opacity: 0.85; }
+        .bill::before {
+            content: '$100';
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            font-family: Georgia, serif;
+            font-size: 14px;
+            color: #6e6240;
+            font-weight: bold;
+        }
+
+        .bill::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 60px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(110, 98, 64, 0.25);
+        }
+
+        .bill.b1 { top: 4%; left: 6%; transform: rotate(-12deg); }
+        .bill.b2 { top: 2%; left: 45%; transform: rotate(6deg); }
+        .bill.b3 { top: 30%; left: 74%; transform: rotate(-4deg); }
+        .bill.b4 { top: 55%; left: 4%; transform: rotate(10deg); }
+        .bill.b5 { top: 60%; left: 55%; transform: rotate(-8deg); }
+        .bill.b6 { top: 68%; left: 78%; transform: rotate(14deg); }
 
         @media (max-width: 700px) {
-            .desk-scene .laptop { width: 190px; }
-            .desk-scene .notebook { width: 110px; }
-            .desk-scene .mug { width: 56px; }
-            .desk-scene .plant { width: 72px; }
+            .bill { width: 140px; height: 64px; }
+            .bill::before { font-size: 11px; top: 6px; left: 9px; }
+            .bill::after { width: 34px; height: 34px; top: 14px; left: 42px; }
         }
 
         .container {
@@ -503,48 +515,14 @@
 </head>
 <body>
 
-    <!-- Decorative home-office desk scene (pure CSS/SVG, no external images) -->
-    <div class="desk-scene" aria-hidden="true">
-        <svg class="plant" viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
-            <path d="M30 95 h40 l-4 12 h-32 z" fill="#8a5a34"/>
-            <ellipse cx="50" cy="95" rx="20" ry="5" fill="#6e4023"/>
-            <path d="M50 95 C 46 70, 40 55, 25 40" stroke="#3f6b3f" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <path d="M50 95 C 52 65, 55 50, 50 25" stroke="#4c7a4c" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <path d="M50 95 C 55 72, 63 58, 75 45" stroke="#3f6b3f" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <ellipse cx="25" cy="38" rx="10" ry="6" fill="#4c7a4c"/>
-            <ellipse cx="50" cy="24" rx="9" ry="6" fill="#5a8a5a"/>
-            <ellipse cx="76" cy="43" rx="10" ry="6" fill="#4c7a4c"/>
-        </svg>
-        <svg class="mug" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 30 h40 v30 a20 20 0 0 1 -40 0 z" fill="#e9ecef"/>
-            <path d="M60 38 h10 a10 10 0 0 1 0 20 h-10 z" fill="none" stroke="#e9ecef" stroke-width="6"/>
-            <ellipse cx="40" cy="30" rx="20" ry="4" fill="#cfd6dc"/>
-            <path d="M28 20 q4 -8 0 -14" stroke="#c9c9c9" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
-            <path d="M40 18 q4 -8 0 -14" stroke="#c9c9c9" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
-        </svg>
-        <svg class="notebook" viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
-            <rect x="5" y="10" width="100" height="80" rx="4" fill="#f4efe2" stroke="#d8cfb8" stroke-width="2"/>
-            <line x1="15" y1="28" x2="95" y2="28" stroke="#c9bfa3" stroke-width="2"/>
-            <line x1="15" y1="42" x2="95" y2="42" stroke="#c9bfa3" stroke-width="2"/>
-            <line x1="15" y1="56" x2="80" y2="56" stroke="#c9bfa3" stroke-width="2"/>
-            <line x1="15" y1="70" x2="70" y2="70" stroke="#c9bfa3" stroke-width="2"/>
-            <rect x="0" y="10" width="8" height="80" fill="#b8912f"/>
-            <g transform="rotate(35 115 45)">
-                <rect x="108" y="10" width="8" height="70" rx="3" fill="#2b2b2b"/>
-                <polygon points="108,10 116,10 112,-4" fill="#e9c46a"/>
-            </g>
-        </svg>
-        <svg class="laptop" viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg">
-            <rect x="30" y="10" width="170" height="110" rx="6" fill="#2c2f33"/>
-            <rect x="38" y="18" width="154" height="94" rx="2" fill="#7db3d6"/>
-            <rect x="38" y="18" width="154" height="94" rx="2" fill="#ffdca0" opacity="0.18"/>
-            <rect x="52" y="34" width="70" height="6" rx="3" fill="#fdfdfd" opacity="0.85"/>
-            <rect x="52" y="48" width="110" height="5" rx="2.5" fill="#fdfdfd" opacity="0.5"/>
-            <rect x="52" y="60" width="90" height="5" rx="2.5" fill="#fdfdfd" opacity="0.5"/>
-            <rect x="52" y="72" width="50" height="16" rx="3" fill="#4c7a4c" opacity="0.8"/>
-            <path d="M10 120 h220 l-14 24 h-192 z" fill="#3a3d42"/>
-            <rect x="0" y="120" width="260" height="8" rx="4" fill="#26282b"/>
-        </svg>
+    <!-- Decorative money-bill background (pure CSS, no external images) -->
+    <div class="bills-scene" aria-hidden="true">
+        <div class="bill b1"></div>
+        <div class="bill b2"></div>
+        <div class="bill b3"></div>
+        <div class="bill b4"></div>
+        <div class="bill b5"></div>
+        <div class="bill b6"></div>
     </div>
 
     <!-- ===================== LOGIN SCREEN ===================== -->
