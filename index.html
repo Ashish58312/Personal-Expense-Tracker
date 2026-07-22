@@ -55,6 +55,93 @@
             padding-bottom: 5px;
         }
 
+        /* ---------- Login Screen ---------- */
+        #login-screen .container {
+            max-width: 380px;
+        }
+
+        #login-screen h1 {
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #ced4da;
+        }
+
+        .login-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            background: #f1f3f5;
+            font-weight: 600;
+            font-size: 14px;
+            color: #6c757d;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .login-tab.active {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .error-msg {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: -8px;
+            margin-bottom: 12px;
+            min-height: 16px;
+        }
+
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .user-bar span {
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .user-bar span strong {
+            color: #212529;
+        }
+
+        .logout-btn {
+            cursor: pointer;
+            background: none;
+            border: 1px solid #ced4da;
+            color: #495057;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .logout-btn:hover {
+            background-color: #f1f3f5;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         /* Balance Section */
         .balance-container {
             text-align: center;
@@ -127,7 +214,7 @@
             font-size: 14px;
         }
 
-        input[type='text'], input[type='number'] {
+        input[type='text'], input[type='number'], input[type='email'], input[type='password'] {
             border: 1px solid #ced4da;
             border-radius: 6px;
             display: block;
@@ -224,44 +311,185 @@
 </head>
 <body>
 
-    <div class="container">
-        <h1>Expense Tracker</h1>
+    <!-- ===================== LOGIN SCREEN ===================== -->
+    <div id="login-screen">
+        <div class="container">
+            <h1>Expense Tracker</h1>
+            <p class="login-subtitle">Sign in to track your money</p>
 
-        <div class="balance-container">
-            <h2>Current Balance</h2>
-            <div id="balance-display" class="balance">$0.00</div>
+            <div class="login-tabs">
+                <div id="tab-login" class="login-tab active">Log In</div>
+                <div id="tab-signup" class="login-tab">Sign Up</div>
+            </div>
+
+            <form id="auth-form">
+                <div class="form-control">
+                    <label for="auth-email">Email</label>
+                    <input type="email" id="auth-email" placeholder="you@gmail.com" required>
+                </div>
+                <div class="form-control">
+                    <label for="auth-password">Password</label>
+                    <input type="password" id="auth-password" placeholder="Enter password..." required minlength="4">
+                </div>
+                <div id="auth-error" class="error-msg"></div>
+                <button class="btn" type="submit" id="auth-submit-btn">Log In</button>
+            </form>
         </div>
+    </div>
 
-        <div class="summary-container">
-            <div class="income">
-                <h3>Income</h3>
-                <p id="income-display" class="money plus">$0.00</p>
+    <!-- ===================== EXPENSE TRACKER ===================== -->
+    <div id="app-screen" class="hidden">
+        <div class="container">
+            <div class="user-bar">
+                <span>Logged in as <strong id="current-user-email"></strong></span>
+                <button id="logout-btn" class="logout-btn">Log Out</button>
             </div>
-            <div class="expense">
-                <h3>Expense</h3>
-                <p id="expense-display" class="money minus">$0.00</p>
+
+            <h1>Expense Tracker</h1>
+
+            <div class="balance-container">
+                <h2>Current Balance</h2>
+                <div id="balance-display" class="balance">$0.00</div>
             </div>
+
+            <div class="summary-container">
+                <div class="income">
+                    <h3>Income</h3>
+                    <p id="income-display" class="money plus">$0.00</p>
+                </div>
+                <div class="expense">
+                    <h3>Expense</h3>
+                    <p id="expense-display" class="money minus">$0.00</p>
+                </div>
+            </div>
+
+            <h2>Add New Transaction</h2>
+            <form id="expense-form">
+                <div class="form-control">
+                    <label for="text">Description</label>
+                    <input type="text" id="text" placeholder="Enter description..." required>
+                </div>
+                <div class="form-control">
+                    <label for="amount">Amount (e.g., -50.00 for expense, 100.00 for income)</label>
+                    <input type="number" id="amount" placeholder="Enter amount..." step="0.01" required>
+                </div>
+                <button class="btn" type="submit">Add Transaction</button>
+            </form>
+
+            <h2>History</h2>
+            <ul id="list" class="list"></ul>
         </div>
-
-        <h2>Add New Transaction</h2>
-        <form id="expense-form">
-            <div class="form-control">
-                <label for="text">Description</label>
-                <input type="text" id="text" placeholder="Enter description..." required>
-            </div>
-            <div class="form-control">
-                <label for="amount">Amount (e.g., -50.00 for expense, 100.00 for income)</label>
-                <input type="number" id="amount" placeholder="Enter amount..." step="0.01" required>
-            </div>
-            <button class="btn" type="submit">Add Transaction</button>
-        </form>
-
-        <h2>History</h2>
-        <ul id="list" class="list">
-            </ul>
     </div>
 
     <script>
+        /* =========================================================
+           AUTH LAYER (client-side demo only — see note at bottom)
+           ========================================================= */
+        const loginScreen = document.getElementById('login-screen');
+        const appScreen = document.getElementById('app-screen');
+        const authForm = document.getElementById('auth-form');
+        const authEmail = document.getElementById('auth-email');
+        const authPassword = document.getElementById('auth-password');
+        const authError = document.getElementById('auth-error');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const tabLogin = document.getElementById('tab-login');
+        const tabSignup = document.getElementById('tab-signup');
+        const currentUserEmailEl = document.getElementById('current-user-email');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        let authMode = 'login'; // 'login' or 'signup'
+
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('users') || '{}');
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Very simple (NOT cryptographically secure) hash just so raw
+        // passwords aren't sitting in localStorage as plain text.
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = (hash << 5) - hash + str.charCodeAt(i);
+                hash |= 0;
+            }
+            return hash.toString();
+        }
+
+        function setAuthMode(mode) {
+            authMode = mode;
+            authError.textContent = '';
+            if (mode === 'login') {
+                tabLogin.classList.add('active');
+                tabSignup.classList.remove('active');
+                authSubmitBtn.textContent = 'Log In';
+            } else {
+                tabSignup.classList.add('active');
+                tabLogin.classList.remove('active');
+                authSubmitBtn.textContent = 'Sign Up';
+            }
+        }
+
+        tabLogin.addEventListener('click', () => setAuthMode('login'));
+        tabSignup.addEventListener('click', () => setAuthMode('signup'));
+
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            authError.textContent = '';
+
+            const email = authEmail.value.trim().toLowerCase();
+            const password = authPassword.value;
+            const users = getUsers();
+
+            if (authMode === 'signup') {
+                if (users[email]) {
+                    authError.textContent = 'An account with this email already exists.';
+                    return;
+                }
+                users[email] = { passwordHash: simpleHash(password) };
+                saveUsers(users);
+                logIn(email);
+            } else {
+                const user = users[email];
+                if (!user || user.passwordHash !== simpleHash(password)) {
+                    authError.textContent = 'Invalid email or password.';
+                    return;
+                }
+                logIn(email);
+            }
+        });
+
+        function logIn(email) {
+            localStorage.setItem('currentUser', email);
+            showApp(email);
+        }
+
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            appScreen.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            authForm.reset();
+            setAuthMode('login');
+        });
+
+        function showApp(email) {
+            currentUserEmailEl.textContent = email;
+            loginScreen.classList.add('hidden');
+            appScreen.classList.remove('hidden');
+            loadTransactionsForUser(email);
+        }
+
+        // Auto-login if a session already exists
+        const existingUser = localStorage.getItem('currentUser');
+        if (existingUser && getUsers()[existingUser]) {
+            showApp(existingUser);
+        }
+
+        /* =========================================================
+           EXPENSE TRACKER (transactions are now stored per-user)
+           ========================================================= */
         const balanceDisplay = document.getElementById('balance-display');
         const incomeDisplay = document.getElementById('income-display');
         const expenseDisplay = document.getElementById('expense-display');
@@ -270,15 +498,19 @@
         const textInput = document.getElementById('text');
         const amountInput = document.getElementById('amount');
 
-        // Get transactions from local storage or set to an empty array
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        let transactions = [];
+        let storageKey = null;
 
-        // Function to generate a unique ID
+        function loadTransactionsForUser(email) {
+            storageKey = `transactions_${email}`;
+            transactions = JSON.parse(localStorage.getItem(storageKey)) || [];
+            init();
+        }
+
         function generateID() {
             return Math.floor(Math.random() * 100000000);
         }
 
-        // Function to add a transaction (called when form is submitted)
         function addTransaction(e) {
             e.preventDefault();
 
@@ -290,7 +522,7 @@
             const transaction = {
                 id: generateID(),
                 text: textInput.value,
-                amount: +amountInput.value // '+' converts string to number
+                amount: +amountInput.value
             };
 
             transactions.push(transaction);
@@ -303,9 +535,7 @@
             amountInput.value = '';
         }
 
-        // Add transactions to DOM list (creates the <li> element)
         function addTransactionDOM(transaction) {
-            // Determine sign and CSS class
             const sign = transaction.amount < 0 ? '-' : '+';
             const itemClass = transaction.amount < 0 ? 'minus' : 'plus';
 
@@ -320,20 +550,16 @@
             list.appendChild(item);
         }
 
-        // Update the balance, income, and expense totals
         function updateValues() {
             const amounts = transactions.map(transaction => transaction.amount);
 
-            // Calculate Total Balance
             const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
 
-            // Calculate Income (positive values)
             const income = amounts
                 .filter(item => item > 0)
                 .reduce((acc, item) => (acc += item), 0)
                 .toFixed(2);
 
-            // Calculate Expenses (negative values, converted to positive for display)
             const expense = (amounts
                 .filter(item => item < 0)
                 .reduce((acc, item) => (acc += item), 0) * -1)
@@ -344,32 +570,26 @@
             expenseDisplay.innerText = `$${expense}`;
         }
 
-        // Remove transaction by ID
         function removeTransaction(id) {
-            // Filter out the transaction with the given ID
             transactions = transactions.filter(transaction => transaction.id !== id);
 
             updateLocalStorage();
-            init(); // Re-render the list and update totals
+            init();
         }
 
-        // Update local storage
         function updateLocalStorage() {
-            localStorage.setItem('transactions', JSON.stringify(transactions));
+            if (storageKey) {
+                localStorage.setItem(storageKey, JSON.stringify(transactions));
+            }
         }
 
-        // Initialize app (clear list, re-render, update totals)
         function init() {
-            list.innerHTML = ''; // Clear existing list items
+            list.innerHTML = '';
             transactions.forEach(addTransactionDOM);
             updateValues();
         }
 
-        // Event listener
         form.addEventListener('submit', addTransaction);
-
-        // Run on load
-        init();
     </script>
 </body>
 </html>
